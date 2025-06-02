@@ -1,5 +1,5 @@
 # SQuan.Helpers.Maui.Mvvm
-MVVM Helpers for .NET MAUI
+The `SQuan.Helpers.Maui.Mvvm` package is designed to supplement the [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) package with .NET MAUI-specific source-generators to simplify creating observable properties or bindable properties on .NET MAUI bindable objects.
 
 ## Installation
 
@@ -12,6 +12,8 @@ This is required because the generated code for [ObservableProperty] on partial 
 You can use [BindableProperty] to reduce the code needed to extend ContentView to create a custom control. The following example shows the `CardTitle` bindable property in the code-behind file to the `CardView` class:
 
 ```c#
+using SQuan.Helpers.Maui.Mvvm;
+
 public partial class CardView : ContentView
 {
     [BindableProperty] public partial string CardTitle { get; set; } = string.Empty;
@@ -28,5 +30,5 @@ public partial class CardView : ContentView
 
 For more information please visit:
 
- - Documentation: https://github.com/stephenquan/SQuan.Helpers.Maui/wiki/MVVM
- - GitHub repository: https://github.com/stephenquan/SQuan.Helpers.Maui
+ - Documentation: https://github.com/stephenquan/SQuanHelpersMaui/wiki/MVVM
+ - GitHub repository: https://github.com/stephenquan/SQuanHelpersMaui

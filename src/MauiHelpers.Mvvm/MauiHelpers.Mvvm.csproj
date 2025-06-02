@@ -21,7 +21,8 @@
     <PackageProjectUrl>https://github.com/stephenquan/MauiHelpers</PackageProjectUrl>
     <RepositoryUrl>https://github.com/stephenquan/MauiHelpers</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/stephenquan/MauiHelpers</PackageReleaseNotes>
-    <PackageTags>dotnet,maui,hekoers</PackageTags>
+    <PackageTags>dotnet,maui,mvvm,source generators</PackageTags>
+    <Authors>Stephen Quan</Authors>
   </PropertyGroup>
 
   <ItemGroup>

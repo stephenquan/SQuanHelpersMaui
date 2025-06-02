@@ -22,6 +22,7 @@
     <RepositoryUrl>https://github.com/stephenquan/SQuanHelpersMaui</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/stephenquan/SQuanHelpersMaui</PackageReleaseNotes>
     <PackageTags>dotnet,maui,mvvm,source generators</PackageTags>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
     <Authors>Stephen Quan</Authors>
   </PropertyGroup>
 

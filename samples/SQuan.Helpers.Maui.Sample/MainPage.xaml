@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SQuan.Helpers.Maui.Sample.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SQuan.Helpers.Maui.Sample"
+    x:DataType="local:MainPage">
+    <Grid Padding="10">
+        <CollectionView
+            ItemsSource="{Binding Cards}"
+            SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
+            SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:CardInfo">
+                    <local:CardView
+                        BorderColor="DarkGray"
+                        CardDescription="{Binding CardDescription}"
+                        CardTemplate="{Binding CardTemplate}"
+                        CardTitle="{Binding CardTitle}"
+                        IconBackgroundColor="SlateGray"
+                        IconImageSource="user.png" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

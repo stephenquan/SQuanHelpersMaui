@@ -1,0 +1,56 @@
+<Project>
+
+  <!-- Get the analyzer from the CommunityToolkit.Mvvm NuGet package -->
+  <Target Name="MauiMVVMToolkitGatherAnalyzers">
+    <ItemGroup>
+      <MauiMVVMToolkitAnalyzer Include="@(Analyzer)" Condition="'%(Analyzer.NuGetPackageId)' == 'CommunityToolkit.Mvvm'" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Remove the analyzer if using Roslyn 3.x (incremental generators require Roslyn 4.x) -->
+  <Target Name="MauiMVVMToolkitRemoveAnalyzersForRoslyn3"
+          Condition="'$(CSharpCoreTargetsPath)' != ''"
+          AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets"
+          DependsOnTargets="MauiMVVMToolkitGatherAnalyzers">
+
+    <!-- Use the CSharpCoreTargetsPath property to find the version of the compiler we are using. This is the same mechanism
+         MSBuild uses to find the compiler. We could check the assembly version for any compiler assembly (since they all have
+         the same version) but Microsoft.Build.Tasks.CodeAnalysis.dll is where MSBuild loads the compiler tasks from so if
+         someone is getting creative with msbuild tasks/targets this is the "most correct" assembly to check. -->
+    <GetAssemblyIdentity AssemblyFiles="$([System.IO.Path]::Combine(`$([System.IO.Path]::GetDirectoryName($(CSharpCoreTargetsPath)))`,`Microsoft.Build.Tasks.CodeAnalysis.dll`))">
+      <Output TaskParameter="Assemblies" ItemName="MauiMVVMToolkitCurrentCompilerAssemblyIdentity"/>
+    </GetAssemblyIdentity>
+
+    <PropertyGroup>
+
+      <!-- Transform the resulting item from GetAssemblyIdentity into a property representing its assembly version -->
+      <MauiMVVMToolkitCurrentCompilerVersion>@(MauiMVVMToolkitCurrentCompilerAssemblyIdentity->'%(Version)')</MauiMVVMToolkitCurrentCompilerVersion>
+
+      <!-- The CurrentCompilerVersionIsNotNewEnough property can now be defined based on the Roslyn assembly version -->
+      <MauiMVVMToolkitCurrentCompilerVersionIsNotNewEnough Condition="$([MSBuild]::VersionLessThan($(MauiMVVMToolkitCurrentCompilerVersion), 4.0))">true</MauiMVVMToolkitCurrentCompilerVersionIsNotNewEnough>
+    </PropertyGroup>
+
+    <!-- If the Roslyn version is < 4.0, disable the source generators -->
+    <ItemGroup Condition ="'$(MauiMVVMToolkitCurrentCompilerVersionIsNotNewEnough)' == 'true'">
+      <Analyzer Remove="@(MauiMVVMToolkitAnalyzer)"/>
+    </ItemGroup>
+
+    <!-- If the source generators are disabled, also emit a warning. This would've been produced by MSBuild itself as well, but
+         emitting this manually lets us customize the message to inform developers as to why exactly the generators have been
+         disabled, and that the rest of the MVVM Toolkit will still keep working as intended, just without additional features. -->
+    <Warning Condition ="'$(MauiMVVMToolkitCurrentCompilerVersionIsNotNewEnough)' == 'true'" Text="The MVVM Toolkit source generators have been disabled on the current configuration, as they need Roslyn 4.x in order to work. The MVVM Toolkit will work just fine, but features relying on the source generators will not be available."/>
+  </Target>
+
+  <!-- Remove the analyzer if Roslyn is missing -->
+  <Target Name="MauiMVVMToolkitRemoveAnalyzersForRosynNotFound"
+          Condition="'$(CSharpCoreTargetsPath)' == ''"
+          AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets"
+          DependsOnTargets="MauiMVVMToolkitGatherAnalyzers">
+
+    <!-- If no Roslyn assembly could be found, just remove the analyzer without emitting a warning -->
+    <ItemGroup>
+      <Analyzer Remove="@(MauiMVVMToolkitAnalyzer)"/>
+    </ItemGroup>
+  </Target>
+
+</Project>

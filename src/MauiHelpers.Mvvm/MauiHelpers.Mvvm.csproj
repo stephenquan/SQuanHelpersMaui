@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProductName>MVVM Helpers for .NET MAUI</ProductName>
+    <Title>MVVM Helpers for .NET MAUI</Title>
+    <Summary>MVVM Helpers for .NET MAUI</Summary>
+    <Description>MVVM Helpers for .NET MAUI</Description>
+
+    <PackageId>MauiHelpers.Mvvm</PackageId>
+    <PackageDescription>MVVM Helpers for .NET MAUI</PackageDescription>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/stephenquan/MauiHelpers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/stephenquan/MauiHelpers</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/stephenquan/MauiHelpers</PackageReleaseNotes>
+    <PackageTags>dotnet,maui,hekoers</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" Visible="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup Label="Package">
+    <None Include="msbuild\$(PackageId).targets" PackagePath="buildTransitive" Pack="true" />
+    <None Include="..\MauiHelpers.Mvvm.SourceGenerators\bin\$(Configuration)\netstandard2.0\MauiHelpers.Mvvm.SourceGenerators.dll" PackagePath="analyzers\dotnet\roslyn4.0\cs" Pack="true" Visible="true" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\MauiHelpers.Mvvm.SourceGenerators\MauiHelpers.Mvvm.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="msbuild\" />
+  </ItemGroup>
+
+</Project>
+ 

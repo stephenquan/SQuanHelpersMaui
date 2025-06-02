@@ -28,14 +28,13 @@
   <ItemGroup>
     <None Include="icon.png" Pack="true" Visible="true" PackagePath="\" />
     <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
+    <None Include="License.md" Pack="true" Visible="true" PackagePath="\" />
   </ItemGroup>
 
   <Target Name="PackageInfo" DependsOnTargets="GetVersion">
     <Message Text="-- PackageInfo: $(PackageId) --" Importance="high" />
 
     <PropertyGroup>
-      <!--<LocalPackagesFolder Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(USERPROFILE)\nuget-packages</LocalPackagesFolder>
-      <LocalPackagesFolder Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)\nuget-packages</LocalPackagesFolder>-->
       <PackageFileName>$(PackageId).$(GitVersion_SemVer).nupkg</PackageFileName>
       <PackageFilePath>$(PackageOutputPath)$(PackageId).$(GitVersion_SemVer).nupkg</PackageFilePath>
       <PackageCache>$(NuGetPackageRoot)$(PackageId)\$(GitVersion_SemVer)</PackageCache>

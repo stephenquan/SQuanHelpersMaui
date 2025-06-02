@@ -29,7 +29,28 @@
     <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
   </ItemGroup>
 
+  <Target Name="PackageInfo" DependsOnTargets="GetVersion">
+    <Message Text="-- PackageInfo: $(PackageId) --" Importance="high" />
+
+    <PropertyGroup>
+      <!--<LocalPackagesFolder Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(USERPROFILE)\nuget-packages</LocalPackagesFolder>
+      <LocalPackagesFolder Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)\nuget-packages</LocalPackagesFolder>-->
+      <PackageFileName>$(PackageId).$(GitVersion_SemVer).nupkg</PackageFileName>
+      <PackageFilePath>$(PackageOutputPath)$(PackageId).$(GitVersion_SemVer).nupkg</PackageFilePath>
+      <PackageCache>$(NuGetPackageRoot)$(PackageId)\$(GitVersion_SemVer)</PackageCache>
+    </PropertyGroup>
+
+    <Message Text="TargetFramework: $(TargetFramework)" Importance="high" />
+    <Message Text="Version: $(Version)" Importance="high" />
+    <Message Text="PackageVersion: $(PackageVersion)" Importance="high" />
+    <Message Text="InformationalVersion: $(GitVersion_InformationalVersion)" Importance="high" />
+    <Message Text="PackageFilePath: $(PackageFilePath)" Importance="high" />
+    <Message Text="PackageCache: $(PackageCache)" Importance="high" />
+    <Message Text="LocalPackagesFolder: $(LocalPackagesFolder)" Importance="high" />
+  </Target>
+  
   <ItemGroup Label="Package">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0" PrivateAssets="contentfiles;analyzers" />
     <None Include="msbuild\$(PackageId).targets" PackagePath="buildTransitive" Pack="true" />
     <None Include="..\MauiHelpers.Mvvm.SourceGenerators\bin\$(Configuration)\netstandard2.0\MauiHelpers.Mvvm.SourceGenerators.dll" PackagePath="analyzers\dotnet\roslyn4.0\cs" Pack="true" Visible="true" />
   </ItemGroup>

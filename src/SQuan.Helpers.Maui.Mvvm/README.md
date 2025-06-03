@@ -65,5 +65,5 @@ public partial class MainPage : ContentPage
 
 For more information please visit:
 
- - Documentation: https://github.com/stephenquan/SQuanHelpersMaui/wiki/MVVM
- - GitHub repository: https://github.com/stephenquan/SQuanHelpersMaui
+ - Documentation: https://github.com/stephenquan/SQuan.Helpers.Maui/wiki/MVVM
+ - GitHub repository: https://github.com/stephenquan/SQuan.Helpers.Maui

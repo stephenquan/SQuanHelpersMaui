@@ -6,13 +6,16 @@ The ``SQuan.Helpers.Maui.Mvvm`` package is designed to complement the [Community
 
 To use `[ObservableProperty]` or `[BindableProperty]` on partial properties, the C# language version must be set to `preview`.
 
-This is necessary because the generated code for `[ObservableProperty]` and `[BindableProperty]` on partial properties relies on preview language features. Be sure to add `<LangVersion>preview</LangVersion>` (or higher) to your `.csproj` file.
+This is necessary because the generated code for `[ObservableProperty]` and `[BindableProperty]` on partial properties relies on preview language features.
+
+Be sure to add `<LangVersion>preview</LangVersion>` (or higher) to your `.csproj` file.
 
 ## CardView Example
 
 You can use [BindableProperty] to reduce the code needed to extend `ContentView` to create a custom control. The following example shows the `CardTitle` bindable property in the code-behind file to the `CardView` class:
 
 ```c#
+using CommunityToolkit.Maui.Markup;
 using SQuan.Helpers.Maui.Mvvm;
 
 public partial class CardView : ContentView

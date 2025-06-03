@@ -1,17 +1,21 @@
 # SQuan.Helpers.Maui.Mvvm
-The `SQuan.Helpers.Maui.Mvvm` package is designed to supplement the [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) package with .NET MAUI-specific source-generators to simplify creating observable properties or bindable properties on .NET MAUI bindable objects.
+
+The `SQuan.Helpers.Maui.Mvvm` package is designed to complement the [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) library by providing .NET MAUI-specific source generators. It helps simplify the creation of observable and bindable properties on .NET MAUI bindable objects.
 
 ## Installation
 
-The C# language version must be set to 'preview' when using [ObservableProperty] or [BindableProperty] on partial properties for the source generators to emit valid code.
+To use `[ObservableProperty]` or `[BindableProperty]` on partial properties, the C# language version must be set to `preview`.
 
-This is required because the generated code for [ObservableProperty] on partial properties uses some preview features. Make sure to add <LangVersion>preview</LangVersion> (or above) to your .csproj file.
+This is necessary because the generated code for `[ObservableProperty]` and `[BindableProperty]` on partial properties relies on preview language features.
 
-## Example
+Be sure to add `<LangVersion>preview</LangVersion>` (or higher) to your `.csproj` file.
 
-You can use [BindableProperty] to reduce the code needed to extend ContentView to create a custom control. The following example shows the `CardTitle` bindable property in the code-behind file to the `CardView` class:
+## CardView Example
+
+You can use [BindableProperty] to reduce the code needed to extend `ContentView` to create a custom control. The following example shows the `CardTitle` bindable property in the code-behind file to the `CardView` class:
 
 ```c#
+using CommunityToolkit.Maui.Markup;
 using SQuan.Helpers.Maui.Mvvm;
 
 public partial class CardView : ContentView
@@ -22,6 +26,37 @@ public partial class CardView : ContentView
     public CardView()
     {
         InitializeComponent();
+    }
+}
+```
+
+## Count Example
+
+You can use `[ObservableProperty]` to reduce the code needed to add properties to a `ContentPage`. The following example turns Count into an observable property in the code-behind file of the `MainPage` class:
+
+```c#
+using CommunityToolkit.Mvvm.Input;
+using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
+
+public partial class MainPage : ContentPage
+{
+    [ObservableProperty] public partial int Count { get; set; } = 0;
+
+    public MainPage()
+    {
+        BindingContext = this;
+        InitializeComponent();
+        CounterBtn.Bind(
+            Button.TextProperty,
+            static (MainPage ctx) => ctx.Count,
+            stringFormat: "Clicked {0} times");
+    }
+
+    [RelayCommand]
+    void IncrementCounter()
+    {
+        Count++;
+        SemanticScreenReader.Announce(CounterBtn.Text);
     }
 }
 ```

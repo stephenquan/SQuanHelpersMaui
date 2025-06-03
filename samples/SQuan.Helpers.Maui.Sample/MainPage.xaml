@@ -5,8 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SQuan.Helpers.Maui.Sample"
     x:DataType="local:MainPage">
-    <Grid Padding="10">
+    <Grid
+        Padding="10"
+        RowDefinitions="Auto,*"
+        RowSpacing="10">
+        <VerticalStackLayout Spacing="10">
+            <Button x:Name="CounterBtn" Command="{Binding IncrementCounterCommand}" />
+        </VerticalStackLayout>
         <CollectionView
+            Grid.Row="1"
             ItemsSource="{Binding Cards}"
             SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
             SelectionMode="Single">

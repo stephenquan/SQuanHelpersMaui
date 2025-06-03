@@ -1,10 +1,14 @@
 ﻿using System.Collections.ObjectModel;
-using SQuan.Helpers.Maui.Mvvm;
+using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Input;
+using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
 
 namespace SQuan.Helpers.Maui.Sample;
 
 public partial class MainPage : ContentPage
 {
+	[ObservableProperty] public partial int Count { get; set; } = 0;
+
 	public ObservableCollection<CardInfo> Cards { get; } =
 	[
 		new CardInfo
@@ -47,5 +51,17 @@ public partial class MainPage : ContentPage
 	{
 		BindingContext = this;
 		InitializeComponent();
+		CounterBtn.Bind(
+			Button.TextProperty,
+			static (MainPage ctx) => ctx.Count,
+			stringFormat: "Clicked {0} times");
+	}
+
+	[RelayCommand]
+	void IncrementCounter()
+	{
+		Count++;
+		SemanticScreenReader.Announce(CounterBtn.Text);
+		SelectedCard = null; // Reset selected card when counter is incremented
 	}
 }

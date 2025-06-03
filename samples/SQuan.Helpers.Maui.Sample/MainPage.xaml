@@ -10,7 +10,7 @@
         RowDefinitions="Auto,*"
         RowSpacing="10">
         <VerticalStackLayout Spacing="10">
-            <Button x:Name="CounterBtn" Clicked="OnCounterClicked" />
+            <Button x:Name="CounterBtn" Command="{Binding IncrementCounterCommand}" />
         </VerticalStackLayout>
         <CollectionView
             Grid.Row="1"

@@ -35,7 +35,8 @@ public partial class CardView : ContentView
 You can use `[ObservableProperty]` to reduce the code needed to add properties to a `ContentPage`. The following example turns Count into an observable property in the code-behind file of the `MainPage` class:
 
 ```c#
-using SQuan.Helpers.Maui.Mvvm;
+using CommunityToolkit.Mvvm.Input;
+using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
 
 public partial class MainPage : ContentPage
 {
@@ -51,7 +52,8 @@ public partial class MainPage : ContentPage
             stringFormat: "Clicked {0} times");
     }
 
-    void OnCounterClicked(object sender, EventArgs e)
+    [RelayCommand]
+    void IncrementCounter()
     {
         Count++;
         SemanticScreenReader.Announce(CounterBtn.Text);

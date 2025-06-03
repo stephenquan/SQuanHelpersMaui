@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Markup;
-using SQuan.Helpers.Maui.Mvvm;
+using CommunityToolkit.Mvvm.Input;
+using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
 
 namespace SQuan.Helpers.Maui.Sample;
 
@@ -56,7 +57,8 @@ public partial class MainPage : ContentPage
 			stringFormat: "Clicked {0} times");
 	}
 
-	void OnCounterClicked(object sender, EventArgs e)
+	[RelayCommand]
+	void IncrementCounter()
 	{
 		Count++;
 		SemanticScreenReader.Announce(CounterBtn.Text);

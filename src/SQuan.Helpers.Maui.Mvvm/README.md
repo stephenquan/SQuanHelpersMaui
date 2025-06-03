@@ -1,6 +1,6 @@
 # SQuan.Helpers.Maui.Mvvm
 
-The ``SQuan.Helpers.Maui.Mvvm`` package is designed to complement the [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) library by providing .NET MAUI-specific source generators. It helps simplify the creation of observable and bindable properties on .NET MAUI bindable objects.
+The `SQuan.Helpers.Maui.Mvvm` package is designed to complement the [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) library by providing .NET MAUI-specific source generators. It helps simplify the creation of observable and bindable properties on .NET MAUI bindable objects.
 
 ## Installation
 

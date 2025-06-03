@@ -62,5 +62,6 @@ public partial class MainPage : ContentPage
 	{
 		Count++;
 		SemanticScreenReader.Announce(CounterBtn.Text);
+		SelectedCard = null; // Reset selected card when counter is incremented
 	}
 }

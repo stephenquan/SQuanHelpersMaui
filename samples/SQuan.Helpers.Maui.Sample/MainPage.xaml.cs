@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Markup;
 using SQuan.Helpers.Maui.Mvvm;
 
 namespace SQuan.Helpers.Maui.Sample;
 
 public partial class MainPage : ContentPage
 {
+	[ObservableProperty] public partial int Count { get; set; } = 0;
+
 	public ObservableCollection<CardInfo> Cards { get; } =
 	[
 		new CardInfo
@@ -47,5 +50,15 @@ public partial class MainPage : ContentPage
 	{
 		BindingContext = this;
 		InitializeComponent();
+		CounterBtn.Bind(
+			Button.TextProperty,
+			static (MainPage ctx) => ctx.Count,
+			stringFormat: "Clicked {0} times");
+	}
+
+	void OnCounterClicked(object sender, EventArgs e)
+	{
+		Count++;
+		SemanticScreenReader.Announce(CounterBtn.Text);
 	}
 }

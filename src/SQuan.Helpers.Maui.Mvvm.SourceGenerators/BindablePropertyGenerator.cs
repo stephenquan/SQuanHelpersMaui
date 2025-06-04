@@ -120,19 +120,18 @@ partial class {className}
 
     bool Is{propertyName}CreatingDefaultValue {{ get; set; }} = false;
 
-    /// <summary>Creates the default value for <see cref=""{propertyName}""/>.</summary>
-    {access} object On{propertyName}CreateDefaultValue()
+    {access} partial {typeName} {propertyName}
+    {{
+        {getModifiers} get => Is{propertyName}CreatingDefaultValue ? field : ({typeName})GetValue({propertyName}Property);
+        {setModifiers} set => SetValue({propertyName}Property, field = value);
+    }}
+
+    object On{propertyName}CreateDefaultValue()
     {{
         Is{propertyName}CreatingDefaultValue = true;
         object result = {propertyName};
         Is{propertyName}CreatingDefaultValue = false;
         return result;
-    }}
-
-    {access} partial {typeName} {propertyName}
-    {{
-        {getModifiers} get => Is{propertyName}CreatingDefaultValue ? field : ({typeName})GetValue({propertyName}Property);
-        {setModifiers} set => SetValue({propertyName}Property, field = value);
     }}
 
     /// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>

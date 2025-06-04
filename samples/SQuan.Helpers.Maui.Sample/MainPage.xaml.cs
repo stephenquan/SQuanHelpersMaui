@@ -39,11 +39,11 @@ public partial class MainPage : ContentPage
 	{
 		if (oldValue is not null)
 		{
-			oldValue.CardTemplate = "CardViewCompressed";
+			oldValue.IsSelected = false;
 		}
 		if (newValue is not null)
 		{
-			newValue.CardTemplate = "CardViewDefault";
+			newValue.IsSelected = true;
 		}
 	}
 

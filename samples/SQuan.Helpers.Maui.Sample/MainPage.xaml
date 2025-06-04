@@ -22,10 +22,10 @@
                     <local:CardView
                         BorderColor="DarkGray"
                         CardDescription="{Binding CardDescription}"
-                        CardTemplate="{Binding CardTemplate}"
                         CardTitle="{Binding CardTitle}"
                         IconBackgroundColor="SlateGray"
-                        IconImageSource="user.png" />
+                        IconImageSource="user.png"
+                        IsSelected="{Binding IsSelected}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

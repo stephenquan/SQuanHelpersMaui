@@ -20,7 +20,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/stephenquan/SQuan.Helpers.Maui</PackageProjectUrl>
     <RepositoryUrl>https://github.com/stephenquan/SQuan.Helpers.Maui</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/stephenquan/SQuan.Helpers.Maui/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/stephenquan/SQuan.Helpers.Maui/releases/$(GitVersion_MajorMinorPatch)</PackageReleaseNotes>
     <PackageTags>dotnet,maui,mvvm,source generators</PackageTags>
     <PackageLicenseFile>License.md</PackageLicenseFile>
     <Authors>Stephen Quan</Authors>

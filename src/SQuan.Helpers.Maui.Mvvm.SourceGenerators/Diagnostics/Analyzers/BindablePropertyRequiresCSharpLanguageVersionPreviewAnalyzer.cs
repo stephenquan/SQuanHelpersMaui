@@ -31,8 +31,20 @@ public sealed class BindablePropertyRequiresCSharpLanguageVersionPreviewAnalyzer
 			}
 
 			// Get the symbol for [BindableProperty]
-			if (context.Compilation.GetTypeByMetadataName("SQuan.Helpers.Maui.Mvvm.BindablePropertyAttribute") is not INamedTypeSymbol bindablePropertySymbol)
+			INamedTypeSymbol? foundPropertySymbol = null;
+			if (context.Compilation.GetTypeByMetadataName("SQuan.Helpers.Maui.Mvvm.BindablePropertyAttribute") is INamedTypeSymbol _bindablePropertySymbol
+				&& _bindablePropertySymbol is not null)
 			{
+				foundPropertySymbol = _bindablePropertySymbol;
+			}
+			if (context.Compilation.GetTypeByMetadataName("SQuan.Helpers.Maui.Mvvm.ObservedPropertyAttribute") is INamedTypeSymbol _observedPropertySymbol
+				&& _observedPropertySymbol is not null)
+			{
+				foundPropertySymbol = _observedPropertySymbol;
+			}
+			if (foundPropertySymbol is null)
+			{
+				// If we don't have either of the attributes, we can skip the analysis
 				return;
 			}
 
@@ -60,11 +72,11 @@ public sealed class BindablePropertyRequiresCSharpLanguageVersionPreviewAnalyzer
 				}
 #endif
 
-				if (context.Symbol.TryGetAttributeWithType(bindablePropertySymbol, out AttributeData? BindablePropertyAttribute))
+				if (context.Symbol.TryGetAttributeWithType(foundPropertySymbol, out AttributeData? bindablePropertyAttribute))
 				{
 					context.ReportDiagnostic(Diagnostic.Create(
 						CSharpLanguageVersionIsNotPreviewForBindableProperty,
-						BindablePropertyAttribute?.GetLocation(),
+						bindablePropertyAttribute?.GetLocation(),
 						context.Symbol));
 				}
 			}, SymbolKind.Property);

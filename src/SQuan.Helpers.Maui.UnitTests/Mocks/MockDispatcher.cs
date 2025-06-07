@@ -1,5 +1,7 @@
 namespace SQuan.Helpers.Maui.UnitTests.Mocks;
 
+#pragma warning disable CsWinRT1028 // This is a mock dispatcher, so we don't need to worry about WinRT compatibility.
+
 public sealed class MockDispatcher : IDispatcher
 {
 	public MockDispatcher() => ManagedThreadId = Environment.CurrentManagedThreadId;

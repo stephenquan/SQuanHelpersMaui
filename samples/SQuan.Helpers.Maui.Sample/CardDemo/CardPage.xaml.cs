@@ -30,8 +30,10 @@ public partial class CardPage : ContentPage
 		}
 	];
 
+	// Implementation of the selected card will be done the source generator.
 	[ObservableProperty] public partial CardInfo? SelectedCard { get; set; } = null;
 
+	// This partial function will be called by the source generator.
 	partial void OnSelectedCardChanged(CardInfo? oldValue, CardInfo? newValue)
 	{
 		if (oldValue is not null)

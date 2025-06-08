@@ -6,11 +6,9 @@ namespace SQuan.Helpers.Maui.Sample;
 
 public partial class BalanceView : Label
 {
-	[BindableProperty]
-	public partial double Balance { get; set; } = 0.0;
+	[BindableProperty] public partial double Balance { get; set; } = 0.0;
 
-	[BindableProperty]
-	public partial CultureInfo Culture { get; set; } = CultureInfo.InstalledUICulture;
+	[BindableProperty] public partial CultureInfo Culture { get; set; } = CultureInfo.InstalledUICulture;
 
 	public BalanceView()
 	{

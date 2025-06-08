@@ -6,6 +6,7 @@ namespace SQuan.Helpers.Maui.Sample;
 
 public partial class CountPage : ContentPage
 {
+	// Our syntax is similar to CommunityToolkit.Mvvm
 	[ObservableProperty] public partial int Count { get; set; } = 0;
 
 	public CountPage()

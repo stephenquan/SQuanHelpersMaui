@@ -17,6 +17,7 @@ public partial class CardView : ContentView
 	{
 		InitializeComponent();
 
+		// Implement a ControlTemplate selector
 		this.Bind(
 			ContentView.ControlTemplateProperty,
 			static (CardView ctx) => ctx.IsSelected,

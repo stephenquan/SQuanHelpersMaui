@@ -5,30 +5,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SQuan.Helpers.Maui.Sample"
     x:DataType="local:MainPage">
-    <Grid
-        Padding="10"
-        RowDefinitions="Auto,*"
-        RowSpacing="10">
-        <VerticalStackLayout Spacing="10">
-            <Button x:Name="CounterBtn" Command="{Binding IncrementCounterCommand}" />
-        </VerticalStackLayout>
-        <CollectionView
-            Grid.Row="1"
-            ItemsSource="{Binding Cards}"
-            SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
-            SelectionMode="Single">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="local:CardInfo">
-                    <local:CardView
-                        BorderColor="DarkGray"
-                        CardDescription="{Binding CardDescription}"
-                        CardTitle="{Binding CardTitle}"
-                        IconBackgroundColor="SlateGray"
-                        IconImageSource="user.png"
-                        IsSelected="{Binding IsSelected}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+    <VerticalStackLayout
+        Padding="30"
+        Spacing="30"
+        VerticalOptions="Center">
+        <Label
+            FontSize="32"
+            HorizontalOptions="Center"
+            Text="Welcome to SQuan.Helpers.Maui!" />
+        <Button
+            Command="{Binding NavigateCommand}"
+            CommandParameter="CountPage"
+            Text="Count Demo" />
+        <Button
+            Command="{Binding NavigateCommand}"
+            CommandParameter="CardPage"
+            Text="Card Demo" />
+        <Button
+            Command="{Binding NavigateCommand}"
+            CommandParameter="BalancePage"
+            Text="Balance Demo" />
+    </VerticalStackLayout>
 
 </ContentPage>

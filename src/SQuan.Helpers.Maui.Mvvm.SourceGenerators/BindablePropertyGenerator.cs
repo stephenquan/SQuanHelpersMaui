@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -57,6 +58,7 @@ public class BindablePropertyGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(properties, (spc, propertySymbol) =>
 		{
+			var propertyAttributes = propertySymbol!.GetAttributes();
 			var classSymbol = propertySymbol!.ContainingType;
 			var className = classSymbol.Name;
 			var namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
@@ -88,6 +90,46 @@ public class BindablePropertyGenerator : IIncrementalGenerator
 				}
 			}
 
+			string additionalChangingCommands = string.Empty;
+			string additionalChangedCommands = string.Empty;
+
+			foreach (var attr in propertyAttributes)
+			{
+				switch (attr.AttributeClass?.ToDisplayString())
+				{
+					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangedForAttribute":
+						foreach (var changedNamedArg in attr.ConstructorArguments)
+						{
+							if (changedNamedArg.Kind == TypedConstantKind.Primitive
+								&& changedNamedArg.Value is string changedPropertyName)
+							{
+								additionalChangedCommands +=
+$$"""
+                (({{className}})b).OnPropertyChanged("{{changedPropertyName}}");
+""";
+							}
+						}
+						break;
+					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangingForAttribute":
+						foreach (var changingNamedArg in attr.ConstructorArguments)
+						{
+							if (changingNamedArg.Kind == TypedConstantKind.Primitive
+								&& changingNamedArg.Value is string changingPropertyName)
+							{
+								additionalChangedCommands +=
+$$"""
+                (({{className}})b).OnPropertyChanging("{{changingPropertyName}}");
+""";
+							}
+						}
+						break;
+
+					default:
+						Trace.WriteLine($"{attr.AttributeClass?.ToDisplayString()} skipped.");
+						continue;
+				}
+			}
+
 			var source = $@"
 using System.ComponentModel;
 
@@ -109,11 +151,13 @@ partial class {className}
             {{
                 (({className})b).On{propertyName}Changing(({typeName})n);
                 (({className})b).On{propertyName}Changing(({typeName})o, ({typeName})n);
+{additionalChangingCommands}
             }},
             propertyChanged: (b,o,n) =>
             {{
                 (({className})b).On{propertyName}Changed(({typeName})n);
                 (({className})b).On{propertyName}Changed(({typeName})o, ({typeName})n);
+{additionalChangedCommands}
             }},
             defaultValueCreator: (b) => (({className})b).On{propertyName}CreateDefaultValue()
         );

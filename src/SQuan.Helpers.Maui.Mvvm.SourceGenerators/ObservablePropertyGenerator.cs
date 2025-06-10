@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -93,6 +94,46 @@ public class ObservablePropertyGenerator : IIncrementalGenerator
 				}
 			}
 
+			string additionalChangingCommands = string.Empty;
+			string additionalChangedCommands = string.Empty;
+
+			foreach (var attr in propertyAttributes)
+			{
+				switch (attr.AttributeClass?.ToDisplayString())
+				{
+					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangedForAttribute":
+						foreach (var changedNamedArg in attr.ConstructorArguments)
+						{
+							if (changedNamedArg.Kind == TypedConstantKind.Primitive
+								&& changedNamedArg.Value is string changedPropertyName)
+							{
+								additionalChangedCommands +=
+$$"""
+                OnPropertyChanged("{{changedPropertyName}}");
+""";
+							}
+						}
+						break;
+					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangingForAttribute":
+						foreach (var changingNamedArg in attr.ConstructorArguments)
+						{
+							if (changingNamedArg.Kind == TypedConstantKind.Primitive
+								&& changingNamedArg.Value is string changingPropertyName)
+							{
+								additionalChangedCommands +=
+$$"""
+                OnPropertyChanging("{{changingPropertyName}}");
+""";
+							}
+						}
+						break;
+
+					default:
+						Trace.WriteLine($"{attr.AttributeClass?.ToDisplayString()} skipped.");
+						continue;
+				}
+			}
+
 			var source = $@"
 using System.ComponentModel;
 
@@ -114,10 +155,12 @@ partial class {className}
                 {typeName} oldValue = field;
                 On{propertyName}Changing(value);
                 On{propertyName}Changing(oldValue, value);
+{additionalChangingCommands}
                 field = value;
                 On{propertyName}Changed(value);
                 On{propertyName}Changed(oldValue, value);
                 OnPropertyChanged(nameof({propertyName}));
+{additionalChangedCommands}
             }}
         }}
     }}

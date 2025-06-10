@@ -25,6 +25,10 @@
             Command="{Binding NavigateCommand}"
             CommandParameter="BalancePage"
             Text="Balance Demo" />
+        <Button
+            Command="{Binding NavigateCommand}"
+            CommandParameter="LocalizePage"
+            Text="Localize Demo" />
     </VerticalStackLayout>
 
 </ContentPage>

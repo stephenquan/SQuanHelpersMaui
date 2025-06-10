@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -129,7 +128,6 @@ $$"""
 						break;
 
 					default:
-						Trace.WriteLine($"{attr.AttributeClass?.ToDisplayString()} skipped.");
 						continue;
 				}
 			}

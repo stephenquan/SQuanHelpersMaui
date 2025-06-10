@@ -1,6 +1,6 @@
 using CommunityToolkit.Maui.Markup;
-using CommunityToolkit.Mvvm.Input;
-using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
+using SQuan.Helpers.Maui.Mvvm;
+using RelayCommandAttribute = CommunityToolkit.Mvvm.Input.RelayCommandAttribute;
 
 namespace SQuan.Helpers.Maui.Sample;
 

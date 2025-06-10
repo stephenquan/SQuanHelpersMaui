@@ -1,8 +1,8 @@
 using System.Globalization;
 using CommunityToolkit.Maui.Markup;
-using CommunityToolkit.Mvvm.Input;
+using SQuan.Helpers.Maui.Mvvm;
 using SQuan.Helpers.Maui.Sample.Resources.Strings;
-using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
+using RelayCommandAttribute = CommunityToolkit.Mvvm.Input.RelayCommandAttribute;
 
 namespace SQuan.Helpers.Maui.Sample;
 
@@ -17,13 +17,8 @@ public partial class LocalizePage : ContentPage
 		new CultureInfo("zh-CN"),
 	];
 
-	[ObservableProperty] public partial int CultureIndex { get; set; } = 0;
-
-	partial void OnCultureIndexChanged(int value)
-	{
-		OnPropertyChanged(nameof(CurrentCulture));
-		OnPropertyChanged("Item");
-	}
+	[ObservableProperty, NotifyPropertyChangedFor(nameof(CurrentCulture), "Item")]
+	public partial int CultureIndex { get; set; } = 0;
 
 	public CultureInfo CurrentCulture => SupportedCultures[CultureIndex];
 

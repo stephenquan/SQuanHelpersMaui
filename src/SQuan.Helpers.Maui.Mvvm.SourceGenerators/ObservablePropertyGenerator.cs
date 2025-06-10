@@ -101,29 +101,21 @@ public class ObservablePropertyGenerator : IIncrementalGenerator
 				switch (attr.AttributeClass?.ToDisplayString())
 				{
 					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangedForAttribute":
-						foreach (var changedNamedArg in attr.ConstructorArguments)
+						foreach (var str in attr.ConstructorArguments.ToStringList())
 						{
-							if (changedNamedArg.Kind == TypedConstantKind.Primitive
-								&& changedNamedArg.Value is string changedPropertyName)
-							{
-								additionalChangedCommands +=
+							additionalChangedCommands +=
 $$"""
-                OnPropertyChanged("{{changedPropertyName}}");
+				OnPropertyChanged("{{str}}");
 """;
-							}
 						}
 						break;
 					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangingForAttribute":
-						foreach (var changingNamedArg in attr.ConstructorArguments)
+						foreach (var str in attr.ConstructorArguments.ToStringList())
 						{
-							if (changingNamedArg.Kind == TypedConstantKind.Primitive
-								&& changingNamedArg.Value is string changingPropertyName)
-							{
-								additionalChangedCommands +=
+							additionalChangedCommands +=
 $$"""
-                OnPropertyChanging("{{changingPropertyName}}");
+				OnPropertyChanging("{{str}}");
 """;
-							}
 						}
 						break;
 
@@ -143,47 +135,47 @@ namespace {namespaceName};
 
 partial class {className}
 {{
-    {access} partial {typeName} {propertyName}
-    {{
-        {getModifiers} get => field;
-        {setModifiers} set
-        {{
-            if (!EqualityComparer<{typeName}>.Default.Equals(field, value))
-            {{
-                {typeName} oldValue = field;
-                On{propertyName}Changing(value);
-                On{propertyName}Changing(oldValue, value);
+	{access} partial {typeName} {propertyName}
+	{{
+		{getModifiers} get => field;
+		{setModifiers} set
+		{{
+			if (!EqualityComparer<{typeName}>.Default.Equals(field, value))
+			{{
+				{typeName} oldValue = field;
+				On{propertyName}Changing(value);
+				On{propertyName}Changing(oldValue, value);
 {additionalChangingCommands}
-                field = value;
-                On{propertyName}Changed(value);
-                On{propertyName}Changed(oldValue, value);
-                OnPropertyChanged(nameof({propertyName}));
+				field = value;
+				On{propertyName}Changed(value);
+				On{propertyName}Changed(oldValue, value);
+				OnPropertyChanged(nameof({propertyName}));
 {additionalChangedCommands}
-            }}
-        }}
-    }}
+			}}
+		}}
+	}}
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
-    /// <param name=""value"">The new property value being set.</param>
-    /// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changing({typeName} value);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
+	/// <param name=""value"">The new property value being set.</param>
+	/// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changing({typeName} value);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
-    /// <param name=""oldValue"">The previous property value that is being replaced.</param>
-    /// <param name=""newValue"">The new property value being set.</param>
-    /// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changing({typeName} oldValue, {typeName} newValue);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
+	/// <param name=""oldValue"">The previous property value that is being replaced.</param>
+	/// <param name=""newValue"">The new property value being set.</param>
+	/// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changing({typeName} oldValue, {typeName} newValue);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
-    /// <param name=""value"">The new property value that was set.</param>
-    /// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changed({typeName} value);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
+	/// <param name=""value"">The new property value that was set.</param>
+	/// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changed({typeName} value);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
-    /// <param name=""oldValue"">The previous property value that was replaced.</param>
-    /// <param name=""newValue"">The new property value that was set.</param>
-    /// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changed({typeName} oldValue, {typeName} newValue);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
+	/// <param name=""oldValue"">The previous property value that was replaced.</param>
+	/// <param name=""newValue"">The new property value that was set.</param>
+	/// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changed({typeName} oldValue, {typeName} newValue);
 }}
 ";
 			spc.AddSource($"{className}_{propertyName}_ObservableProperty.g.cs", SourceText.From(source, Encoding.UTF8));

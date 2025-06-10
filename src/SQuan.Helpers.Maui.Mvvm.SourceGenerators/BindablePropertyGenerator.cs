@@ -97,29 +97,21 @@ public class BindablePropertyGenerator : IIncrementalGenerator
 				switch (attr.AttributeClass?.ToDisplayString())
 				{
 					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangedForAttribute":
-						foreach (var changedNamedArg in attr.ConstructorArguments)
+						foreach (var str in attr.ConstructorArguments.ToStringList())
 						{
-							if (changedNamedArg.Kind == TypedConstantKind.Primitive
-								&& changedNamedArg.Value is string changedPropertyName)
-							{
-								additionalChangedCommands +=
+							additionalChangedCommands +=
 $$"""
-                (({{className}})b).OnPropertyChanged("{{changedPropertyName}}");
+				(({{className}})b).OnPropertyChanged("{{str}}");
 """;
-							}
 						}
 						break;
 					case "SQuan.Helpers.Maui.Mvvm.NotifyPropertyChangingForAttribute":
-						foreach (var changingNamedArg in attr.ConstructorArguments)
+						foreach (var str in attr.ConstructorArguments.ToStringList())
 						{
-							if (changingNamedArg.Kind == TypedConstantKind.Primitive
-								&& changingNamedArg.Value is string changingPropertyName)
-							{
-								additionalChangedCommands +=
+							additionalChangedCommands +=
 $$"""
-                (({{className}})b).OnPropertyChanging("{{changingPropertyName}}");
+				(({{className}})b).OnPropertyChanging("{{str}}");
 """;
-							}
 						}
 						break;
 
@@ -140,63 +132,63 @@ namespace {namespaceName};
 //[{{GeneratedCodeAttribute}}]
 partial class {className}
 {{
-    /// <summary>
-    /// Bindable property for <see cref=""{propertyName}""/>.
-    /// </summary>
-    {access} static readonly BindableProperty {propertyName}Property
-        = BindableProperty.Create(nameof({propertyName}), typeof({bareTypeName}), typeof({className}),
-            propertyChanging: (b,o,n) =>
-            {{
-                (({className})b).On{propertyName}Changing(({typeName})n);
-                (({className})b).On{propertyName}Changing(({typeName})o, ({typeName})n);
+	/// <summary>
+	/// Bindable property for <see cref=""{propertyName}""/>.
+	/// </summary>
+	{access} static readonly BindableProperty {propertyName}Property
+		= BindableProperty.Create(nameof({propertyName}), typeof({bareTypeName}), typeof({className}),
+			propertyChanging: (b,o,n) =>
+			{{
+				(({className})b).On{propertyName}Changing(({typeName})n);
+				(({className})b).On{propertyName}Changing(({typeName})o, ({typeName})n);
 {additionalChangingCommands}
-            }},
-            propertyChanged: (b,o,n) =>
-            {{
-                (({className})b).On{propertyName}Changed(({typeName})n);
-                (({className})b).On{propertyName}Changed(({typeName})o, ({typeName})n);
+			}},
+			propertyChanged: (b,o,n) =>
+			{{
+				(({className})b).On{propertyName}Changed(({typeName})n);
+				(({className})b).On{propertyName}Changed(({typeName})o, ({typeName})n);
 {additionalChangedCommands}
-            }},
-            defaultValueCreator: (b) => (({className})b).On{propertyName}CreateDefaultValue()
-        );
+			}},
+			defaultValueCreator: (b) => (({className})b).On{propertyName}CreateDefaultValue()
+		);
 
-    bool Is{propertyName}CreatingDefaultValue {{ get; set; }} = false;
+	bool Is{propertyName}CreatingDefaultValue {{ get; set; }} = false;
 
-    {access} partial {typeName} {propertyName}
-    {{
-        {getModifiers} get => Is{propertyName}CreatingDefaultValue ? field : ({typeName})GetValue({propertyName}Property);
-        {setModifiers} set => SetValue({propertyName}Property, field = value);
-    }}
+	{access} partial {typeName} {propertyName}
+	{{
+		{getModifiers} get => Is{propertyName}CreatingDefaultValue ? field : ({typeName})GetValue({propertyName}Property);
+		{setModifiers} set => SetValue({propertyName}Property, field = value);
+	}}
 
-    object On{propertyName}CreateDefaultValue()
-    {{
-        Is{propertyName}CreatingDefaultValue = true;
-        object result = {propertyName};
-        Is{propertyName}CreatingDefaultValue = false;
-        return result;
-    }}
+	object On{propertyName}CreateDefaultValue()
+	{{
+		Is{propertyName}CreatingDefaultValue = true;
+		object result = {propertyName};
+		Is{propertyName}CreatingDefaultValue = false;
+		return result;
+	}}
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
-    /// <param name=""value"">The new property value being set.</param>
-    /// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changing({typeName} value);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
+	/// <param name=""value"">The new property value being set.</param>
+	/// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changing({typeName} value);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
-    /// <param name=""oldValue"">The previous property value that is being replaced.</param>
-    /// <param name=""newValue"">The new property value being set.</param>
-    /// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changing({typeName} oldValue, {typeName} newValue);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> is changing.</summary>
+	/// <param name=""oldValue"">The previous property value that is being replaced.</param>
+	/// <param name=""newValue"">The new property value being set.</param>
+	/// <remarks>This method is invoked right before the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changing({typeName} oldValue, {typeName} newValue);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
-    /// <param name=""value"">The new property value that was set.</param>
-    /// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changed({typeName} value);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
+	/// <param name=""value"">The new property value that was set.</param>
+	/// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changed({typeName} value);
 
-    /// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
-    /// <param name=""oldValue"">The previous property value that was replaced.</param>
-    /// <param name=""newValue"">The new property value that was set.</param>
-    /// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
-    partial void On{propertyName}Changed({typeName} oldValue, {typeName} newValue);
+	/// <summary>Executes the logic for when <see cref=""{propertyName}""/> just changed.</summary>
+	/// <param name=""oldValue"">The previous property value that was replaced.</param>
+	/// <param name=""newValue"">The new property value that was set.</param>
+	/// <remarks>This method is invoked right after the value of <see cref=""{propertyName}""/> is changed.</remarks>
+	partial void On{propertyName}Changed({typeName} oldValue, {typeName} newValue);
 }}
 ";
 			spc.AddSource($"{className}_{propertyName}_BindableProperty.g.cs", SourceText.From(source, Encoding.UTF8));

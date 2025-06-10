@@ -5,7 +5,7 @@
 /// When used, the generated property setter will also call observable object's OnPropertyChanging(string?)
 /// for the properties specified in the attribute data.
 /// </summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
 public sealed class NotifyPropertyChangingForAttribute : Attribute
 {
 	/// <summary>

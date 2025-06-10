@@ -21,6 +21,7 @@ using SQuan.Helpers.Maui.Mvvm;
 public partial class CardView : ContentView
 {
     [BindableProperty] public partial string CardTitle { get; set; } = string.Empty;
+    [BindableProperty] public partial string CardDescription { get; set; } = string.Empty;
     // ...
 
     public CardView()
@@ -35,8 +36,9 @@ public partial class CardView : ContentView
 You can use `[ObservableProperty]` to reduce the code needed to add properties to a `ContentPage`. The following example turns Count into an observable property in the code-behind file of the `MainPage` class:
 
 ```c#
-using CommunityToolkit.Mvvm.Input;
-using ObservablePropertyAttribute = SQuan.Helpers.Maui.Mvvm.ObservablePropertyAttribute;
+using CommunityToolkit.Maui.Markup;
+using SQuan.Helpers.Maui.Mvvm;
+using RelayCommandAttribute = CommunityToolkit.Mvvm.Input.RelayCommandAttribute;
 
 public partial class MainPage : ContentPage
 {

@@ -120,6 +120,9 @@
   <data name="BTN_CLICKED_N_TIMES" xml:space="preserve">
     <value>Clicked {0} times</value>
   </data>
+  <data name="LBL_AVAILABLE_BALANCE" xml:space="preserve">
+    <value>Available balance</value>
+  </data>
   <data name="LBL_HELLO" xml:space="preserve">
     <value>Hello, World!</value>
   </data>

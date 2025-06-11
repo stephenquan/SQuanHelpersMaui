@@ -12,7 +12,7 @@
         Spacing="30"
         VerticalOptions="Center">
 
-        <Label Style="{StaticResource Headline}" Text="Available balance" />
+        <Label Style="{StaticResource Headline}" Text="{Binding [LBL_AVAILABLE_BALANCE]}" />
 
         <local:BalanceView
             Balance="{Binding Source={x:Reference BalanceSlider}, x:DataType='Slider', Path=Value}"
@@ -26,7 +26,7 @@
             Value="789" />
 
         <Button
-            Clicked="ChangeCulture"
+            Command="{Binding ChangeCultureCommand}"
             HorizontalOptions="Center"
             Text="{Binding CurrentCulture.Name}" />
 

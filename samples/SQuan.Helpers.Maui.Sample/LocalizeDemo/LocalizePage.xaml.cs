@@ -22,6 +22,9 @@ public partial class LocalizePage : ContentPage
 
 	public CultureInfo CurrentCulture => SupportedCultures[CultureIndex];
 
+	public string? this[string key]
+		=> AppStrings.ResourceManager.GetString(key, CurrentCulture) is string str ? str : key;
+
 	public LocalizePage()
 	{
 		BindingContext = this;
@@ -32,9 +35,6 @@ public partial class LocalizePage : ContentPage
 			binding2: BindingBase.Create(static (LocalizePage ctx) => ctx.Count, BindingMode.OneWay),
 			convert: ((CultureInfo? culture, int count) v) => AppStrings.ResourceManager.GetString(nameof(AppStrings.BTN_CLICKED_N_TIMES), v.culture) is string str ? string.Format(str, v.count) : "Counter");
 	}
-
-	public string? this[string key]
-		=> AppStrings.ResourceManager.GetString(key, CurrentCulture) is string str ? str : key;
 
 	[RelayCommand]
 	void IncrementCounter()
@@ -47,6 +47,5 @@ public partial class LocalizePage : ContentPage
 	void ChangeCulture()
 	{
 		CultureIndex = (CultureIndex + 1) % SupportedCultures.Count;
-		OnPropertyChanged(nameof(CurrentCulture));
 	}
 }

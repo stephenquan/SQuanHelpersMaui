@@ -70,6 +70,15 @@ namespace SQuan.Helpers.Maui.Sample.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available balance.
+        /// </summary>
+        internal static string LBL_AVAILABLE_BALANCE {
+            get {
+                return ResourceManager.GetString("LBL_AVAILABLE_BALANCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello, World!.
         /// </summary>
         internal static string LBL_HELLO {

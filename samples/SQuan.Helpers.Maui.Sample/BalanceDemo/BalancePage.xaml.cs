@@ -1,4 +1,7 @@
 using System.Globalization;
+using SQuan.Helpers.Maui.Mvvm;
+using SQuan.Helpers.Maui.Sample.Resources.Strings;
+using RelayCommandAttribute = CommunityToolkit.Mvvm.Input.RelayCommandAttribute;
 
 namespace SQuan.Helpers.Maui.Sample;
 
@@ -12,9 +15,13 @@ public partial class BalancePage : ContentPage
 		new CultureInfo("zh-CN"),
 	];
 
-	int cultureIndex = 0;
+	[ObservableProperty, NotifyPropertyChangedFor(nameof(CurrentCulture), "Item")]
+	public partial int CultureIndex { get; set; } = 0;
 
-	public CultureInfo CurrentCulture => SupportedCultures[cultureIndex];
+	public CultureInfo CurrentCulture => SupportedCultures[CultureIndex];
+
+	public string this[string key]
+		=> AppStrings.ResourceManager.GetString(key, CurrentCulture) is string str ? str : key;
 
 	public BalancePage()
 	{
@@ -22,9 +29,9 @@ public partial class BalancePage : ContentPage
 		InitializeComponent();
 	}
 
-	void ChangeCulture(object sender, EventArgs e)
+	[RelayCommand]
+	void ChangeCulture()
 	{
-		cultureIndex = (cultureIndex + 1) % SupportedCultures.Count;
-		OnPropertyChanged(nameof(CurrentCulture));
+		CultureIndex = (CultureIndex + 1) % SupportedCultures.Count;
 	}
 }

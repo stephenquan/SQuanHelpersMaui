@@ -120,6 +120,9 @@
   <data name="BTN_CLICKED_N_TIMES" xml:space="preserve">
     <value>已点击 {0} 次</value>
   </data>
+  <data name="LBL_AVAILABLE_BALANCE" xml:space="preserve">
+    <value>可用余额</value>
+  </data>
   <data name="LBL_HELLO" xml:space="preserve">
     <value>你好，世界！</value>
   </data>

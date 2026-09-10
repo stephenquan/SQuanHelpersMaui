@@ -9,7 +9,7 @@ namespace SQuan.Helpers.Maui;
 	"Design",
 	"CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable",
 	Justification = "This behavior does not own delegate lifetimes. UIKit owns delegates; they are swapped and released in OnAttachedTo/OnDetachedFrom.")]
-partial class InputExtrasBehavior : PlatformBehavior<InputView>
+partial class InputExtrasBehavior : Behavior<VisualElement>
 {
 	UIKit.UITextField? textField;
 	UIKit.UITextView? textView;
@@ -19,10 +19,12 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 	UIKit.IUITextViewDelegate? originalTextViewDelegate;
 
 	/// <inheritdoc />
-	protected override void OnAttachedTo(InputView bindable, UIKit.UIView platformView)
+	protected override void OnAttachedTo(VisualElement bindable)
 	{
-		base.OnAttachedTo(bindable, platformView);
-		if (platformView is UIKit.UITextField textField)
+		base.OnAttachedTo(bindable);
+		bindable.Focused += OnFocused;
+		bindable.Unfocused += OnUnfocused;
+		if (bindable.Handler?.PlatformView is UIKit.UITextField textField)
 		{
 			originalBackgroundColor = textField.BackgroundColor;
 			originalBorderStyle = textField.BorderStyle;
@@ -31,7 +33,7 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 			this.textField = textField;
 			UpdateBorderThickness();
 		}
-		else if (platformView is UIKit.UITextView textView)
+		else if (bindable.Handler?.PlatformView is UIKit.UITextView textView)
 		{
 			originalBackgroundColor = textView.BackgroundColor;
 			originalTextViewDelegate = textView.Delegate;
@@ -42,8 +44,10 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 	}
 
 	/// <inheritdoc />
-	protected override void OnDetachedFrom(InputView bindable, UIKit.UIView platformView)
+	protected override void OnDetachingFrom(VisualElement bindable)
 	{
+		bindable.Focused -= OnFocused;
+		bindable.Unfocused -= OnUnfocused;
 		if (textField is not null)
 		{
 			textField.BackgroundColor = originalBackgroundColor;
@@ -67,7 +71,7 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 			textView = null;
 		}
 
-		base.OnDetachedFrom(bindable, platformView);
+		base.OnDetachingFrom(bindable);
 	}
 
 	partial void UpdateBorderThickness()

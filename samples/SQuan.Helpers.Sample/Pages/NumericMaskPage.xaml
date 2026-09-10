@@ -5,51 +5,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sqm="clr-namespace:SQuan.Helpers.Maui;assembly=SQuan.Helpers.Maui"
     Title="Numeric Mask Demo">
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="30">
-            <Label Text="Entry (unrestricted)" />
-            <Entry />
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="30">
+                <Label Text="Entry (unrestricted)" />
+                <Entry />
 
-            <Label Text="Entry (integer only input)" />
-            <Entry
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Integer"
-                Keyboard="Numeric" />
+                <Label Text="Entry (integer only input)" />
+                <Entry
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Integer"
+                    Keyboard="Numeric" />
 
-            <Label Text="Entry (decimal only input)" />
-            <Entry
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Decimal"
-                Keyboard="Numeric" />
+                <Label Text="Entry (decimal only input)" />
+                <Entry
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Decimal"
+                    Keyboard="Numeric" />
 
-            <Label Text="Entry (license plate AAA999)" />
-            <Entry
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Pattern"
-                sqm:InputExtras.InputPattern="^([A-Za-z]{0,2}|[A-Za-z]{3}[0-9]{0,3})$"
-                Keyboard="Default" />
+                <Label Text="Entry (license plate AAA999)" />
+                <Entry
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Pattern"
+                    sqm:InputExtras.InputPattern="^([A-Za-z]{0,2}|[A-Za-z]{3}[0-9]{0,3})$"
+                    Keyboard="Default" />
 
-            <Label Text="Editor (unrestricted)" />
-            <Editor />
+                <Label Text="Editor (unrestricted)" />
+                <Editor />
 
-            <Label Text="Editor (integer only input)" />
-            <Editor
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Integer"
-                Keyboard="Numeric" />
+                <Label Text="Editor (integer only input)" />
+                <Editor
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Integer"
+                    Keyboard="Numeric" />
 
-            <Label Text="Editor (decimal only input)" />
-            <Editor
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Decimal"
-                Keyboard="Numeric" />
+                <Label Text="Editor (decimal only input)" />
+                <Editor
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Decimal"
+                    Keyboard="Numeric" />
 
-            <Label Text="Editor (license plate AAA999)" />
-            <Editor
-                sqm:InputExtras.BorderThickness="1"
-                sqm:InputExtras.InputMode="Pattern"
-                sqm:InputExtras.InputPattern="^([A-Za-z]{0,2}|[A-Za-z]{3}[0-9]{0,3})$"
-                Keyboard="Default" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Editor (license plate AAA999)" />
+                <Editor
+                    sqm:InputExtras.BorderThickness="1"
+                    sqm:InputExtras.InputMode="Pattern"
+                    sqm:InputExtras.InputPattern="^([A-Za-z]{0,2}|[A-Za-z]{3}[0-9]{0,3})$"
+                    Keyboard="Default" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <sqm:SoftKeyboard Grid.Row="1" HorizontalOptions="Center" />
+    </Grid>
 </ContentPage>

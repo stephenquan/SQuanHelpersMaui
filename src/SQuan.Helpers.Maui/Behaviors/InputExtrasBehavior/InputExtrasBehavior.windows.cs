@@ -3,7 +3,7 @@
 namespace SQuan.Helpers.Maui;
 
 /// <inheritdoc />
-partial class InputExtrasBehavior : PlatformBehavior<InputView>
+partial class InputExtrasBehavior : Behavior<VisualElement>
 {
 	Microsoft.UI.Xaml.Controls.TextBox? textBox;
 	Microsoft.UI.Xaml.Thickness? originalBorderThickness;
@@ -13,11 +13,12 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 	const string kTextControlBorderThemeThicknessFocused = "TextControlBorderThemeThicknessFocused";
 
 	/// <inheritdoc />
-	protected override void OnAttachedTo(InputView bindable, Microsoft.UI.Xaml.FrameworkElement platformView)
+	protected override void OnAttachedTo(VisualElement bindable)
 	{
-		base.OnAttachedTo(bindable, platformView);
-
-		if (platformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
+		base.OnAttachedTo(bindable);
+		bindable.Focused += OnFocused;
+		bindable.Unfocused += OnUnfocused;
+		if (bindable.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
 		{
 			textBox.BeforeTextChanging += TextBox_BeforeTextChanging;
 			this.textBox = textBox;
@@ -29,19 +30,29 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 	}
 
 	/// <inheritdoc />
-	protected override void OnDetachedFrom(InputView bindable, Microsoft.UI.Xaml.FrameworkElement platformView)
+	protected override void OnDetachingFrom(VisualElement bindable)
 	{
+		bindable.Focused -= OnFocused;
+		bindable.Unfocused -= OnUnfocused;
 		if (textBox is not null)
 		{
 			textBox.BeforeTextChanging -= TextBox_BeforeTextChanging;
 			if (originalTextControlBorderThemeThickness is null)
+			{
 				textBox.Resources.Remove(kTextControlBorderThemeThickness);
+			}
 			else
+			{
 				textBox.Resources[kTextControlBorderThemeThickness] = originalTextControlBorderThemeThickness;
+			}
 			if (originalTextControlBorderThemeThicknessFocused is null)
+			{
 				textBox.Resources.Remove(kTextControlBorderThemeThicknessFocused);
+			}
 			else
+			{
 				textBox.Resources[kTextControlBorderThemeThicknessFocused] = originalTextControlBorderThemeThicknessFocused;
+			}
 			if (originalBorderThickness.HasValue)
 			{
 				textBox.BorderThickness = originalBorderThickness.Value;
@@ -49,7 +60,7 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 			textBox = null;
 		}
 
-		base.OnDetachedFrom(bindable, platformView);
+		base.OnDetachingFrom(bindable);
 	}
 
 	void TextBox_BeforeTextChanging(Microsoft.UI.Xaml.Controls.TextBox sender, Microsoft.UI.Xaml.Controls.TextBoxBeforeTextChangingEventArgs args)

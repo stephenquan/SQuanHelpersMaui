@@ -6,20 +6,22 @@ using Android.Content.Res;
 namespace SQuan.Helpers.Maui;
 
 /// <inheritdoc />
-partial class InputExtrasBehavior : PlatformBehavior<InputView>
+partial class InputExtrasBehavior : Behavior<VisualElement>
 {
 	Android.Widget.EditText? editText;
 	Android.Text.Method.IKeyListener? originalKeyListener;
 	string originalText = string.Empty;
 	ColorStateList? originalBorderTintList;
-	Android.Text.Method.DigitsKeyListener integerKeyListener = Android.Text.Method.DigitsKeyListener.GetInstance("-0123456789");
-	Android.Text.Method.DigitsKeyListener decimalKeyListener = Android.Text.Method.DigitsKeyListener.GetInstance("-0123456789.,");
+	static readonly Android.Text.Method.DigitsKeyListener integerKeyListener = Android.Text.Method.DigitsKeyListener.GetInstance("-0123456789");
+	static readonly Android.Text.Method.DigitsKeyListener decimalKeyListener = Android.Text.Method.DigitsKeyListener.GetInstance("-0123456789.,");
 
 	/// <inheritdoc />
-	protected override void OnAttachedTo(InputView bindable, Android.Views.View platformView)
+	protected override void OnAttachedTo(VisualElement bindable)
 	{
-		base.OnAttachedTo(bindable, platformView);
-		if (platformView is Android.Widget.EditText editText)
+		base.OnAttachedTo(bindable);
+		bindable.Focused += OnFocused;
+		bindable.Unfocused += OnUnfocused;
+		if (bindable.Handler?.PlatformView is Android.Widget.EditText editText)
 		{
 			this.editText = editText;
 			originalBorderTintList = editText.BackgroundTintList;
@@ -31,8 +33,11 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 		}
 	}
 
-	protected override void OnDetachedFrom(InputView bindable, Android.Views.View platformView)
+	/// <inheritdoc />
+	protected override void OnDetachingFrom(VisualElement bindable)
 	{
+		bindable.Focused -= OnFocused;
+		bindable.Unfocused -= OnUnfocused;
 		if (editText is not null)
 		{
 			editText.BeforeTextChanged -= EditText_BeforeTextChanged;
@@ -41,7 +46,7 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 			editText.BackgroundTintList = originalBorderTintList;
 			editText = null;
 		}
-		base.OnDetachedFrom(bindable, platformView);
+		base.OnDetachingFrom(bindable);
 	}
 
 	void EditText_BeforeTextChanged(object? sender, Android.Text.TextChangedEventArgs e)

@@ -10,6 +10,8 @@ namespace SQuan.Helpers.Maui;
 [AttachedBindableProperty<double>("BorderThickness", DefaultValue = 1.0, CoerceValueMethodName = nameof(OnCoerceBorderThickness))]
 [AttachedBindableProperty<InputMode>("InputMode", DefaultValue = InputMode.None, CoerceValueMethodName = nameof(OnCoerceInputMode))]
 [AttachedBindableProperty<string>("InputPattern", DefaultValue = "", CoerceValueMethodName = nameof(OnCoerceInputPattern))]
+[AttachedBindableProperty<string>("SoftKeyboardName", DefaultValue = "")]
+[AttachedBindableProperty<SoftKeyboardType>("SoftKeyboardType", DefaultValue = SoftKeyboardType.Default)]
 public partial class InputExtras
 {
 	static object OnCoerceBorderThickness(BindableObject bindable, object value)

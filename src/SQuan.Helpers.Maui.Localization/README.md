@@ -1,50 +1,51 @@
 # SQuan.Helpers.Maui.Localization
 
-This library provides a localization manager, a XAML markup extension, and Fluent C# extension methods to make it easier to build .NET MAUI applications that react to localization changes at runtime.
+Simple, runtime-aware localization for .NET MAUI. Use your existing resource system with:
 
-## Configure the LocalizationManager.Current.LocalizationProvider
+- a XAML `Localize` markup extension;
+- a fluent C# `Localize` extension method; and
+- a single `LocalizationManager` that refreshes localized bindings when the culture changes.
 
-Set the `LocalizationProvider` on `LocalizationManager.Current` to perform string lookups. You can use your `ResourceManager.GetString` method, for example:
+## Install
 
-```c#
-LocalizationManager.Current.LocalizationProvider = AppStrings.ResourceManager.GetString;
+Install the NuGet package:
+
+```bash
+dotnet add package SQuan.Helpers.Maui.Localization
 ```
 
-## Include the XAML namespace
+## Configure
 
-In order to use the Localize markup extension in XAML, the following `xmlns` needs to be added into your page or view:
-
-```xaml
-xmlns:i18n="clr-namespace:SQuan.Helpers.Maui.Localization;assembly=SQuan.Helpers.Maui.Localization"
-```
-
-## Include the C# namespace
-
-In order to use the Localize extension method in C#, the following using statement needs to be added into your file:
+Register your string provider once in `MauiProgram.cs`. For a generated resource class named `AppStrings`, the `ResourceManager.GetString` method is enough:
 
 ```c#
 using SQuan.Helpers.Maui.Localization;
+
+public static MauiApp CreateMauiApp()
+{
+    MauiAppBuilder builder = MauiApp.CreateBuilder();
+
+    builder
+        .UseMauiApp<App>();
+
+    LocalizationManager.Current.LocalizationProvider = AppStrings.ResourceManager.GetString;
+
+    return builder.Build();
+}
 ```
 
-## Get/Set culture values through the LocalizationManager
+The provider receives a resource key and the current UI culture, so it can be replaced with any lookup strategy.
 
-The LocalizationManager provides wrappers for CurrentCulture and CurrentUICulture. These wrappers raise property-change and other event notifications so that culture changes propagate to localized strings.
+## Localize in XAML
 
-```c#
-var de_DE = new CultureInfo("de-DE");
-LocalizationManager.Current.CurrentUICulture = de_DE; // Set localized strings to German.
-LocalizationManager.Current.CurrentCulture = de_DE; // Set date, time, and currency for Germany.
-```
+Add the namespace to a page or view, then use resource keys directly with the `Localize` bindings:
 
-## XAML Localize markup extension example
-
-You can use the Localize markup extension in XAML to assign localized string resources to your text properties, e.g.
-
-```xaml
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:i18n="clr-namespace:SQuan.Helpers.Maui.Localization;assembly=SQuan.Helpers.Maui.Localization"
-             Title="{i18n:Localize TITLE_HOME}">
+```xml
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:i18n="clr-namespace:SQuan.Helpers.Maui.Localization;assembly=SQuan.Helpers.Maui.Localization"
+    Title="{i18n:Localize TITLE_HOME}">
     <ScrollView>
         <VerticalStackLayout>
            <Label Text="{i18n:Localize LABEL_HELLO_WORLD}" />
@@ -55,28 +56,40 @@ You can use the Localize markup extension in XAML to assign localized string res
 </ContentPage>
 ```
 
-## Using the Localize Fluent C# extension method
+## Localize in C#
 
-Use `Localize` to create a culture-aware binding to your localized string resource:
+You can do culture-aware bindings in C# using the same resource key:
 
 ```c#
-// Localize using the string key.
-CounterBtn.Localize(
-    Button.TextProperty,
-    "BUTTON_CLICKED_N_TIMES",
-    Count);
+using SQuan.Helpers.Maui.Localization;
 
-// Localize using a binding to a string key (useful for collections).
-CounterBtn.Localize(
-    Button.TextProperty,
-    new Binding(".", source: "BUTTON_CLICKED_N_TIMES"),
-    Count);
+CounterBtn.Localize(Button.TextProperty, "BUTTON_CLICK_ME");
+```
 
-// Localize using a localization provider function.
-CounterBtn.Localize(
-    Button.TextProperty,
-    _ => AppStrings.BUTTON_CLICKED_N_TIMES,
-    Count);
+Formatting arguments are also supported:
+
+```c#
+CounterBtn.Localize(Label.TextProperty, "BUTTON_CLICKED_N_TIMES", count);
+```
+
+For type safety, a function provider is also supported:
+
+```c#
+CounterBtn.Localize(Label.TextProperty, _ => AppStrings.BUTTON_CLICKED_N_TIMES, count);
+```
+
+
+## Change culture at runtime
+
+Set `CurrentUICulture` for translated strings and `CurrentCulture` for formatting such as dates, numbers, and currency. Existing localized bindings update automatically.
+
+```c#
+using System.Globalization;
+using SQuan.Helpers.Maui.Localization;
+
+CultureInfo culture = new("de-DE");
+LocalizationManager.Current.CurrentUICulture = culture;
+LocalizationManager.Current.CurrentCulture = culture;
 ```
 
 ## Further information

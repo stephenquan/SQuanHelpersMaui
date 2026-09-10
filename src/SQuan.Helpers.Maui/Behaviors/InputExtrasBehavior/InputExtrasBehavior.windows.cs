@@ -35,13 +35,21 @@ partial class InputExtrasBehavior : PlatformBehavior<InputView>
 		{
 			textBox.BeforeTextChanging -= TextBox_BeforeTextChanging;
 			if (originalTextControlBorderThemeThickness is null)
+			{
 				textBox.Resources.Remove(kTextControlBorderThemeThickness);
+			}
 			else
+			{
 				textBox.Resources[kTextControlBorderThemeThickness] = originalTextControlBorderThemeThickness;
+			}
 			if (originalTextControlBorderThemeThicknessFocused is null)
+			{
 				textBox.Resources.Remove(kTextControlBorderThemeThicknessFocused);
+			}
 			else
+			{
 				textBox.Resources[kTextControlBorderThemeThicknessFocused] = originalTextControlBorderThemeThicknessFocused;
+			}
 			if (originalBorderThickness.HasValue)
 			{
 				textBox.BorderThickness = originalBorderThickness.Value;

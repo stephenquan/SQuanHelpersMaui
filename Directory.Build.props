@@ -18,16 +18,22 @@
     <NuGetAuditMode>all</NuGetAuditMode>
 
     <!-- MAUI Specific -->
-    <MauiVersion>10.0.100</MauiVersion>
-    <MauiPackageVersion>10.0.100</MauiPackageVersion>
-    <MicrosoftExtensionsLoggingDebugVersion>10.0.11</MicrosoftExtensionsLoggingDebugVersion>
+    <MauiVersion>10.0.101</MauiVersion>
+    <MauiPackageVersion>10.0.101</MauiPackageVersion>
     <NextMauiPackageVersion>10.0.0</NextMauiPackageVersion>
     <MauiStrictXamlCompilation>true</MauiStrictXamlCompilation>
     <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
     <!-- Other Microsoft libs -->
-    <MicrosoftExtensionsLocalizationVersion>10.0.11</MicrosoftExtensionsLocalizationVersion>
+    <MicrosoftExtensionsLoggingDebugVersion>10.0.12</MicrosoftExtensionsLoggingDebugVersion>
+    <MicrosoftExtensionsLocalizationVersion>10.0.12</MicrosoftExtensionsLocalizationVersion>
+    <MicrosoftCodeAnalysisAnalyzersVersion>5.6.0</MicrosoftCodeAnalysisAnalyzersVersion>
+    <MicrosoftCodeAnalysisCSharpVersion>5.6.0</MicrosoftCodeAnalysisCSharpVersion>
+    <MicrosoftNETTestSdkVersion>18.10.0</MicrosoftNETTestSdkVersion>
+    <MicrosoftTestingExtensionsCodeCoverageVersion>18.11.0</MicrosoftTestingExtensionsCodeCoverageVersion>
+    <MicrosoftDataSqliteVersion>10.0.12</MicrosoftDataSqliteVersion>
+    <SystemRuntimeCachingVersion>10.0.12</SystemRuntimeCachingVersion>
 
     <!-- CommunityToolkits -->
     <CommunityToolkitMauiVersion>15.0.1</CommunityToolkitMauiVersion>
@@ -35,12 +41,9 @@
     <CommunityToolkitMvvmVersion>8.4.2</CommunityToolkitMvvmVersion>
     <NoWarn>$(NoWarn);MCTEXP001</NoWarn>
 
-    <!-- GitVersion -->
+    <!-- 3rd party libs -->
     <GitVersionMsBuildVersion>6.8.2</GitVersionMsBuildVersion>
-
-    <!-- Roslyn -->
-    <MicrosoftCodeAnalysisAnalyzersVersion>5.6.0</MicrosoftCodeAnalysisAnalyzersVersion>
-    <MicrosoftCodeAnalysisCSharpVersion>5.6.0</MicrosoftCodeAnalysisCSharpVersion>
+    <SkiaSharpViewsMauiControlsVersion>4.152.0</SkiaSharpViewsMauiControlsVersion>
 
     <!-- https://learn.microsoft.com/dotnet/core/deploying/native-aot/?tabs=net8plus%2Cwindows -->
     <StripSymbols>false</StripSymbols>
